@@ -5,6 +5,7 @@ ali mike dylan and noa
 
 import csv
 import math
+import random
 import collections
 import sys
 import statistics
@@ -14,7 +15,6 @@ filename = 'geolife-cars-ten-percent.csv'
 data = []
 r = 1
 grid = None
-DENOM = 20
 
 def import_data(fname):
     """
@@ -35,8 +35,6 @@ def get_cell_indices(point):
     helper function for preprocess - 
     given a point p, decide which cell it belongs in
     """
-    minx = min(point[0] for point in data)
-    miny = min(point[1] for point in data)
     col = int(point[0]-minx / r)
     row = int(point[1]-miny / r)
     return col, row
@@ -47,13 +45,25 @@ def preprocess(data):
     to be used for pre-processing (creating the grid)
     O (n log n) time for sorting
     """
-    # define width and height of our plane (based on input)
-    width = abs(max(point[0] for point in data) - min(point[0] for point in data))
-    height = abs(max(point[1] for point in data) - min(point[0] for point in data))
+    global minx, maxx, miny, maxy
+    minx = min(point[0] for point in data)
+    maxx = max(point[0] for point in data)
+    miny = min(point[0] for point in data)
+    maxy = max(point[1] for point in data)
+    print("minx", minx)
+    print("maxx", maxx)
+    print("miny", miny)
+    print("maxy", maxy)
 
+    # define width and height of our plane (based on input)
+    width = abs(maxx - minx)
+    height = abs(maxy - miny)
+    
     # define number of columns and rows for our grid 
-    num_cols = int(width / r)
-    num_rows = int(height / r)
+    num_cols = int(width / r) + 1
+    num_rows = int(height / r) + 1
+    print(num_cols)
+    print(num_rows)
 
     # initialize an empty grid with the appropriate number of cells
     global grid 
@@ -61,20 +71,37 @@ def preprocess(data):
 
     for point in data: 
         col, row = get_cell_indices(point)
+        #print("col: ", col)
+        #print("row: ", row)
         grid[row][col].append(point)
 
     for row in grid:
         for cell in row:
-            print("flag2")
+            #print("flag2")
             cell.sort()
 
 def density(p):
     """
     find the density for a given point
+    input: p, a point that may or may not be in P
+    output: the # of 
     """
-    cell = get_cell_indices(p)
+    col, row = get_cell_indices(p)
 
-    return len(cell)
+    # add everything in the given cell to ret
+    count = len(grid[row][col])
+
+    # now check adjacent cells
+    if row > 1: # row is not last
+        count += len([q for q in grid[row-1][col] if q[1] <= (p[1] + r)])
+    if row < len(grid): # row is not last 
+        count += len([q for q in grid[row+1][col] if q[1] >= (p[1] - r)])
+    if col > 1: # col is not first 
+        count += len([q for q in grid[row][col-1] if q[0] >= (p[0] - r)])
+    if col < len(grid[0]): # col is not last
+        count += len([q for q in grid[row][col+1] if q[0] <= (p[0] + r)])
+
+    return count
 
 def hubs(k, r):
     """
@@ -92,8 +119,12 @@ def main():
     4. call hubs
     """
     import_data(filename) # step 1
-    print(grid)
-    return preprocess(data) # step 2
+    preprocess(data) # step 2
+
+    p = random.choice(data)
+    print(p)
+    print(len(data))
+    return density(p)
 
 if __name__ == "__main__":
     print(main())
