@@ -4,19 +4,19 @@ ali mike dylan and noa
 """
 
 import csv
-import math
-import random
-import collections
 import sys
-import statistics
-#import matplotlib
+import random
 import heapq
+import time 
 
 ### define global variables
-filename = 'geolife-cars-ten-percent.csv'
+ten_percent = 'geolife-cars-ten-percent.csv'
+sixty_percent = 'geolife-cars-sixty-percent.csv'
 data = []
 r = 1
 grid = None
+
+interval = 0
 
 def import_data(fname):
     """
@@ -37,7 +37,7 @@ def get_cell_indices(point):
     helper function for preprocess - 
     given a point p, decide which cell it belongs in
     """
-    print("get cell indices flag!!!!")
+    #print("get cell indices flag!!!!")
     col = int(point[0]-minx / r)
     row = int(point[1]-miny / r)
     return col, row
@@ -94,10 +94,10 @@ def density(p):
     output: the # of points within r*r square of p
     ~O(1) time
     """
-    print("density flag!!!!!")
+    #print("density flag!!!!!")
     col, row = get_cell_indices(p)
-    print("row: ", row)
-    print("col: ", col)
+    #print("row: ", row)
+    #print("col: ", col)
 
     # add everything in the given cell to ret
     count = len(grid[row][col])
@@ -120,18 +120,19 @@ def hubs(k):
     any two hubs re separated by at least distance r
     O(n) runtime complexity 
     """
+    start = time.time()
     # each item in the heap is a tuple of where tup[0] = density and tup[1] = coordinates (x,y)
     ret = [(0, (0,0))] * k # initialize list of 0s of length k
-    print("ret: ", ret)
+    #print("ret: ", ret)
     heapq.heapify(ret) # make it a heap 
 
-    print("hubs flag")
+    #print("hubs flag")
     upper_bound = maxy
     for row in range(num_rows):
         left_bound = minx
-        print("row: ", row)
+        #print("row: ", row)
         for col in range(num_cols):
-            print("col: ", col)
+            #print("col: ", col)
             cell_center = (((left_bound*2 + r)/2), (upper_bound*2 - r)/2) # get the center of the cell
             """
             print("cell_center x: ", cell_center[0])
@@ -146,31 +147,28 @@ def hubs(k):
         upper_bound -= r # decrement upper bound by r
         # so we are moving to the right across the grid, and moving down
 
+    end = time.time()
+
+    global interval 
+    interval = end - start
+
     return ret
-
-def visualize():
-    """
-    visualize
-    """
-    return 
-
-
-def main():
-    """
-    main function
-    1. import the data from csv file 
-    2. pre-process the data
-    3. call density
-    4. call hubs
-    """
-    import_data(filename) # step 1
-    preprocess(data) # step 2
-
-    p = random.choice(data)
-    print("random point: ", p)
-    print("number of points: ", len(data))
-    print("density of p: ", density(p))
-    return hubs(4)
-
+    
 if __name__ == "__main__":
-    print(main())
+    ### 10% 
+    """
+    import_data(ten_percent) # step 1
+    preprocess(data) # step 2
+    p = random.choice(data)
+    print(hubs(10))
+    """
+
+    ### 60%
+    import_data(sixty_percent) # step 1
+    preprocess(data) # step 2
+    p = random.choice(data)
+    print(hubs(2))
+
+    ### full dataset
+    print("time: ", interval)
+    
