@@ -11,7 +11,9 @@ import time
 
 ### define global variables
 ten_percent = 'geolife-cars-ten-percent.csv'
+thirty_percent = 'geolife-cars-thirty-percent.csv'
 sixty_percent = 'geolife-cars-sixty-percent.csv'
+full_dataset = 'geolife-cars.csv'
 data = []
 r = 1
 grid = None
@@ -156,19 +158,38 @@ def hubs(k):
     
 if __name__ == "__main__":
     ### 10% 
-    """
     import_data(ten_percent) # step 1
     preprocess(data) # step 2
     p = random.choice(data)
     print(hubs(10))
-    """
+    print("points in dataset: ", len(data))
+    print("10% time: ", interval)
+
+    ### 30% 
+    data = []
+    import_data(thirty_percent) # step 1
+    preprocess(data) # step 2
+    p = random.choice(data)
+    print(hubs(2))
+    print("points in dataset: ", len(data))
+    print("30% time: ", interval)
 
     ### 60%
+    data = []
     import_data(sixty_percent) # step 1
     preprocess(data) # step 2
     p = random.choice(data)
     print(hubs(2))
+    print("points in dataset: ", len(data))
+    print("60% time: ", interval)
 
     ### full dataset
-    print("time: ", interval)
+    data = []
+    import_data(full_dataset) # step 1
+    preprocess(data) # step 2
+    p = random.choice(data)
+    print(hubs(2))
+    print("points in dataset: ", len(data))
+    print("100% time: ", interval)
+    
     
