@@ -4,7 +4,6 @@ ali mike dylan and noa
 """
 
 import csv
-import sys
 import random
 import heapq
 import time 
@@ -191,5 +190,3 @@ if __name__ == "__main__":
     print(hubs(2))
     print("points in dataset: ", len(data))
     print("100% time: ", interval)
-    
-    
