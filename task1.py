@@ -6,7 +6,9 @@ ali mike dylan and noa
 import csv
 import random
 import heapq
-import time 
+import time
+from matplotlib import pyplot as plt
+import seaborn
 
 ### define global variables
 ten_percent = 'geolife-cars-ten-percent.csv'
@@ -38,11 +40,9 @@ def get_cell_indices(point):
     helper function for preprocess - 
     given a point p, decide which cell it belongs in
     """
-    #print("get cell indices flag!!!!")
     col = int((point[0]-minx) / r)
     row = int((point[1]-miny) / r)
-    #print("col: ", col)
-    #print("row: ", row)
+
     return col, row
 
 def preprocess(data):
@@ -52,6 +52,9 @@ def preprocess(data):
     O (n log n) time for sorting
     """
     global minx, maxx, miny, maxy
+    global num_cols
+    global num_rows
+
     minx = min(point[0] for point in data)
     maxx = max(point[0] for point in data)
     miny = min(point[1] for point in data)
@@ -59,17 +62,11 @@ def preprocess(data):
 
     # define width and height of our plane (based on input)
     width = abs(maxx - minx)
-    print("width: ", width)
     height = abs(maxy - miny)
-    print("height: ", height)
     
     # define number of columns and rows for our grid 
-    global num_cols
-    global num_rows
     num_cols = int(width / r) + 1
     num_rows = int(height / r) + 1
-    print(num_cols)
-    print(num_rows)
 
     # initialize an empty grid with the appropriate number of cells
     global grid 
@@ -77,13 +74,10 @@ def preprocess(data):
 
     for point in data: 
         col, row = get_cell_indices(point)
-        print("col: ", col)
-        print("row: ", row)
         grid[row][col].append(point)
 
     for row in grid:
         for cell in row:
-            #print("flag2")
             cell.sort()
 
 def density(p):
@@ -93,10 +87,7 @@ def density(p):
     output: the # of points within r*r square of p
     ~O(1) time
     """
-    #print("density flag!!!!!")
     col, row = get_cell_indices(p)
-    #print("row: ", row)
-    #print("col: ", col)
 
     # add everything in the given cell to ret
     count = len(grid[row][col])
@@ -119,32 +110,24 @@ def hubs(k):
     any two hubs re separated by at least distance r
     O(n) runtime complexity 
     """
+    global all_hubs
+    all_hubs = []
     start = time.time()
-    # each item in the heap is a tuple of where tup[0] = density and tup[1] = coordinates (x,y)
     ret = [(0, (0,0))] * k # initialize list of 0s of length k
-    #print("ret: ", ret)
     heapq.heapify(ret) # make it a heap 
 
-    #print("hubs flag")
     upper_bound = maxy
     for row in range(num_rows):
         left_bound = minx
-        #print("row: ", row)
         for col in range(num_cols):
-            #print("col: ", col)
             cell_center = (((left_bound*2 + r)/2), (upper_bound*2 - r)/2) # get the center of the cell
-            """
-            print("cell_center x: ", cell_center[0])
-            print("cell_center y: ", cell_center[1])
-            print("grid cell: ", grid[row][col])
-            print("conditional flag!!!!")
-            """
+            print(ret)
             if density(cell_center) > min(ret, key = lambda x: x[0])[0]:
                 heapq.heapreplace(ret, (density(cell_center), cell_center))
             
+            all_hubs.append(density(cell_center))
             left_bound += r # increment left bound by r
         upper_bound -= r # decrement upper bound by r
-        # so we are moving to the right across the grid, and moving down
 
     end = time.time()
 
@@ -152,17 +135,50 @@ def hubs(k):
     interval = end - start
 
     return ret
+
+def visualize(hubs, data):
+    x = [point[0] for point in data]
+    y = [point[1] for point in data]
+    plt.scatter(x, y, s = 5, alpha = 0.5)
+
+    x_hubs = [center[1][0] for center in hubs]
+    y_hubs = [center[1][1] for center in hubs]
+    plt.scatter(x_hubs, y_hubs, color = 'r')
+    plt.show()
+    return
     
 if __name__ == "__main__":
     
-    ### 10% 
+    
+    ### make scatterplot 
+    r = 8
+    import_data(full_dataset) # step 1
+    preprocess(data) # step 2
+    hubs = hubs(10)
+    #print(grid)
+    #print(hubs)
+    visualize(hubs, data)
+    """
+
+    ### testing hubs
+    global all_hubs
+    r = 3
+    data = [((random.uniform(-10, 10)), random.uniform(-10, 10)) for _ in range(100)]
+    data += [((random.uniform(-5, 5)), random.uniform(-5, 5)) for _ in range(1000)]
+    preprocess(data)
+    hubs = hubs(4)
+    print(hubs)
+    visualize(hubs, data)
+
+    """
+    """
+    ### 10%
+    data = [] 
     import_data(ten_percent) # step 1
     preprocess(data) # step 2
-    p = random.choice(data)
     print(hubs(10))
     print("points in dataset: ", len(data))
     print("10% time: ", interval)
-    """
     ### 30% 
     data = []
     import_data(thirty_percent) # step 1

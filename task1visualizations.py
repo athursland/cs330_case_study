@@ -3,6 +3,11 @@ Visualizations for Task 1
 """
 
 import task1
-import matplotlib
-import seaborn
 
+
+def main():
+    return
+
+
+if __name__ == "__main__":
+    print(main())
