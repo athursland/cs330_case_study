@@ -9,6 +9,8 @@ import random
 import collections
 import sys
 import statistics
+#import matplotlib
+import heapq
 
 ### define global variables
 filename = 'geolife-cars-ten-percent.csv'
@@ -60,6 +62,8 @@ def preprocess(data):
     height = abs(maxy - miny)
     
     # define number of columns and rows for our grid 
+    global num_cols
+    global num_rows
     num_cols = int(width / r) + 1
     num_rows = int(height / r) + 1
     print(num_cols)
@@ -84,7 +88,8 @@ def density(p):
     """
     find the density for a given point
     input: p, a point that may or may not be in P
-    output: the # of 
+    output: the # of points within r*r square of p
+    ~O(1) time
     """
     col, row = get_cell_indices(p)
 
@@ -103,12 +108,52 @@ def density(p):
 
     return count
 
-def hubs(k, r):
+from dataclasses import dataclass, field
+from typing import Any
+
+@dataclass(order=True)
+class PrioritizedItem:
+    priority: int
+    item: Any=field(compare=False)
+
+def hubs(k):
     """
     identify k > - hubs of high density s.t. 
     any two hubs re separated by at least distance r
+    O(n) runtime complexity 
     """
-    return
+    # each item in the heap is a tuple of where 0 = density and 1 = coordinates
+    ret = [(0, (0,0))] * k # initialize list of 0s of length k
+    print("ret: ", ret)
+    heapq.heapify(ret) # make it a heap 
+
+    print("hubs flag")
+    upper_bound = maxy
+    for row in range(num_rows):
+        left_bound = minx
+        print("row: ", row)
+        for col in range(num_cols):
+            print("col: ", col)
+            # get the center of the given cell
+            cell_center = (((left_bound*2 + r)/2), (upper_bound*2 - r)/2)
+            print("cell_center x: ", cell_center[0])
+            print("cell_center y: ", cell_center[1])
+            print("grid cell: ", grid[row][col])
+            if density(cell_center) > min(ret, key = lambda x: x[0]):
+                heapq.heapreplace(ret, (density(cell_center), cell_center))
+            
+            left_bound += r # increment left bound by r
+        upper_bound -= r # decrement upper bound by r
+        # so we are moving to the right across the grid, and moving down
+
+    return ret
+
+def visualize():
+    """
+    visualize
+    """
+    return 
+
 
 def main():
     """
@@ -122,9 +167,10 @@ def main():
     preprocess(data) # step 2
 
     p = random.choice(data)
-    print(p)
-    print(len(data))
-    return density(p)
+    print("random point: ", p)
+    print("number of points: ", len(data))
+    print("density of p: ", density(p))
+    return hubs(4)
 
 if __name__ == "__main__":
     print(main())
