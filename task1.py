@@ -94,9 +94,9 @@ def density(p):
 
     # now check adjacent cells
     if row > 1: # row is not last
-        count += len([q for q in grid[row-1][col] if q[1] <= (p[1] + r)])
+        count += len([q for q in grid[row-1][col] if q[1] >= (p[1] + r)])
     if row+1 < len(grid): # row is not last 
-        count += len([q for q in grid[row+1][col] if q[1] >= (p[1] - r)])
+        count += len([q for q in grid[row+1][col] if q[1] <= (p[1] - r)])
     if col > 1: # col is not first 
         count += len([q for q in grid[row][col-1] if q[0] >= (p[0] - r)])
     if col+1 < len(grid[0]): # col is not last
@@ -120,17 +120,14 @@ def hubs(k):
     for row in range(num_rows):
         left_bound = minx
         for col in range(num_cols):
-            cell_center = (((left_bound*2 + r)/2), (upper_bound*2 - r)/2) # get the center of the cell
-            print(ret)
+            cell_center = ((((left_bound*2)+r)/2), (((upper_bound*2)-r)/2)) # get the center of the cell
             if density(cell_center) > min(ret, key = lambda x: x[0])[0]:
                 heapq.heapreplace(ret, (density(cell_center), cell_center))
-            
             all_hubs.append(density(cell_center))
             left_bound += r # increment left bound by r
         upper_bound -= r # decrement upper bound by r
 
     end = time.time()
-
     global interval 
     interval = end - start
 
@@ -139,11 +136,11 @@ def hubs(k):
 def visualize(hubs, data):
     x = [point[0] for point in data]
     y = [point[1] for point in data]
-    plt.scatter(x, y, s = 5, alpha = 0.5)
+    plt.scatter(x, y, s = 5, alpha = 0.05)
 
     x_hubs = [center[1][0] for center in hubs]
     y_hubs = [center[1][1] for center in hubs]
-    plt.scatter(x_hubs, y_hubs, color = 'r')
+    plt.scatter(x_hubs, y_hubs, s = color = 'r')
     plt.show()
     return
     
@@ -155,8 +152,7 @@ if __name__ == "__main__":
     import_data(full_dataset) # step 1
     preprocess(data) # step 2
     hubs = hubs(10)
-    #print(grid)
-    #print(hubs)
+    print(hubs)
     visualize(hubs, data)
     """
 
