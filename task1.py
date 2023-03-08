@@ -37,6 +37,7 @@ def get_cell_indices(point):
     helper function for preprocess - 
     given a point p, decide which cell it belongs in
     """
+    print("get cell indices flag!!!!")
     col = int(point[0]-minx / r)
     row = int(point[1]-miny / r)
     return col, row
@@ -52,10 +53,12 @@ def preprocess(data):
     maxx = max(point[0] for point in data)
     miny = min(point[0] for point in data)
     maxy = max(point[1] for point in data)
+    """
     print("minx", minx)
     print("maxx", maxx)
     print("miny", miny)
     print("maxy", maxy)
+    """
 
     # define width and height of our plane (based on input)
     width = abs(maxx - minx)
@@ -66,8 +69,8 @@ def preprocess(data):
     global num_rows
     num_cols = int(width / r) + 1
     num_rows = int(height / r) + 1
-    print(num_cols)
-    print(num_rows)
+    #print(num_cols)
+    #print(num_rows)
 
     # initialize an empty grid with the appropriate number of cells
     global grid 
@@ -91,7 +94,10 @@ def density(p):
     output: the # of points within r*r square of p
     ~O(1) time
     """
+    print("density flag!!!!!")
     col, row = get_cell_indices(p)
+    print("row: ", row)
+    print("col: ", col)
 
     # add everything in the given cell to ret
     count = len(grid[row][col])
@@ -99,22 +105,14 @@ def density(p):
     # now check adjacent cells
     if row > 1: # row is not last
         count += len([q for q in grid[row-1][col] if q[1] <= (p[1] + r)])
-    if row < len(grid): # row is not last 
+    if row+1 < len(grid): # row is not last 
         count += len([q for q in grid[row+1][col] if q[1] >= (p[1] - r)])
     if col > 1: # col is not first 
         count += len([q for q in grid[row][col-1] if q[0] >= (p[0] - r)])
-    if col < len(grid[0]): # col is not last
+    if col+1 < len(grid[0]): # col is not last
         count += len([q for q in grid[row][col+1] if q[0] <= (p[0] + r)])
 
     return count
-
-from dataclasses import dataclass, field
-from typing import Any
-
-@dataclass(order=True)
-class PrioritizedItem:
-    priority: int
-    item: Any=field(compare=False)
 
 def hubs(k):
     """
@@ -122,7 +120,7 @@ def hubs(k):
     any two hubs re separated by at least distance r
     O(n) runtime complexity 
     """
-    # each item in the heap is a tuple of where 0 = density and 1 = coordinates
+    # each item in the heap is a tuple of where tup[0] = density and tup[1] = coordinates (x,y)
     ret = [(0, (0,0))] * k # initialize list of 0s of length k
     print("ret: ", ret)
     heapq.heapify(ret) # make it a heap 
@@ -134,12 +132,14 @@ def hubs(k):
         print("row: ", row)
         for col in range(num_cols):
             print("col: ", col)
-            # get the center of the given cell
-            cell_center = (((left_bound*2 + r)/2), (upper_bound*2 - r)/2)
+            cell_center = (((left_bound*2 + r)/2), (upper_bound*2 - r)/2) # get the center of the cell
+            """
             print("cell_center x: ", cell_center[0])
             print("cell_center y: ", cell_center[1])
             print("grid cell: ", grid[row][col])
-            if density(cell_center) > min(ret, key = lambda x: x[0]):
+            print("conditional flag!!!!")
+            """
+            if density(cell_center) > min(ret, key = lambda x: x[0])[0]:
                 heapq.heapreplace(ret, (density(cell_center), cell_center))
             
             left_bound += r # increment left bound by r
