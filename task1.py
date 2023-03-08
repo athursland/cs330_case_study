@@ -14,7 +14,7 @@ thirty_percent = 'geolife-cars-thirty-percent.csv'
 sixty_percent = 'geolife-cars-sixty-percent.csv'
 full_dataset = 'geolife-cars.csv'
 data = []
-r = 1
+r = 5
 grid = None
 
 interval = 0
@@ -39,8 +39,10 @@ def get_cell_indices(point):
     given a point p, decide which cell it belongs in
     """
     #print("get cell indices flag!!!!")
-    col = int(point[0]-minx / r)
-    row = int(point[1]-miny / r)
+    col = int((point[0]-minx) / r)
+    row = int((point[1]-miny) / r)
+    #print("col: ", col)
+    #print("row: ", row)
     return col, row
 
 def preprocess(data):
@@ -52,26 +54,22 @@ def preprocess(data):
     global minx, maxx, miny, maxy
     minx = min(point[0] for point in data)
     maxx = max(point[0] for point in data)
-    miny = min(point[0] for point in data)
+    miny = min(point[1] for point in data)
     maxy = max(point[1] for point in data)
-    """
-    print("minx", minx)
-    print("maxx", maxx)
-    print("miny", miny)
-    print("maxy", maxy)
-    """
 
     # define width and height of our plane (based on input)
     width = abs(maxx - minx)
+    print("width: ", width)
     height = abs(maxy - miny)
+    print("height: ", height)
     
     # define number of columns and rows for our grid 
     global num_cols
     global num_rows
     num_cols = int(width / r) + 1
     num_rows = int(height / r) + 1
-    #print(num_cols)
-    #print(num_rows)
+    print(num_cols)
+    print(num_rows)
 
     # initialize an empty grid with the appropriate number of cells
     global grid 
@@ -79,8 +77,8 @@ def preprocess(data):
 
     for point in data: 
         col, row = get_cell_indices(point)
-        #print("col: ", col)
-        #print("row: ", row)
+        print("col: ", col)
+        print("row: ", row)
         grid[row][col].append(point)
 
     for row in grid:
@@ -156,6 +154,7 @@ def hubs(k):
     return ret
     
 if __name__ == "__main__":
+    
     ### 10% 
     import_data(ten_percent) # step 1
     preprocess(data) # step 2
@@ -163,7 +162,7 @@ if __name__ == "__main__":
     print(hubs(10))
     print("points in dataset: ", len(data))
     print("10% time: ", interval)
-
+    """
     ### 30% 
     data = []
     import_data(thirty_percent) # step 1
@@ -190,3 +189,4 @@ if __name__ == "__main__":
     print(hubs(2))
     print("points in dataset: ", len(data))
     print("100% time: ", interval)
+    """
