@@ -26,10 +26,8 @@ def dtw(seriesA, seriesB):
 
    for i in range(1, n):
        for j in range(1, m):
-           DP[i][j] = dist(A[i], B[j]) + min(DP[i][j - 1], DP[i - 1][j],
-                                            DP[i - 1][j - 1])
+           DP[i][j] = dist(A[i], B[j]) + min(DP[i][j - 1], DP[i - 1][j], DP[i - 1][j - 1])
 
-   
    def find_min(n, m):
        min = (0, m)
        for i in range(1, n):
@@ -44,7 +42,6 @@ def dtw(seriesA, seriesB):
        distances.append(dist(A[pair[0]], B[pair[1]]))
 
    return DP[n - 1][m - 1]
-
 
 #Frechet Distance Function
 def fd(seriesA, seriesB):
@@ -98,4 +95,3 @@ def main():
 
 if __name__ == '__main__':
    main()
-
