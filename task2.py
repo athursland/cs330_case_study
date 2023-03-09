@@ -69,7 +69,7 @@ def simplify_trajectory(T: List[Tuple[float, float]], eps: float) -> List[Tuple[
 
    max_dist, max_idx = max((dist_point_segment(T[i], (T[0], T[-1])), i) for i in range(1, len(T) - 1))
 
-   if max_dist>=eps:
+   if max_dist>eps:
        simplified_left= simplify_trajectory(T[:max_idx+1],eps)
        simplified_right= simplify_trajectory(T[max_idx:],eps)
        return simplified_left[:-1] + simplified_right
