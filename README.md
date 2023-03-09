@@ -3,7 +3,7 @@
 ## Authors
  - Ali Thursland - akt21
  - Mike Kim - bk146
- - Noa Nir - 
+ - Noa Nir - nn83
  - Dylan Schneiderman - mds98
 
 ## Zip Contents
@@ -20,7 +20,9 @@ It also contains the following python files:
 - task1_viz.py - this is what you can run to see our visualizations made from the dataset provided.
 - task1_tests.py - this file contains the tests that we are asked to run.
 - task2.py - this is the python file that contains the coded algorithms asked of us in task2.
+- task2_tests.py - this file contains the tests that we are asked to run for task 2.
 - task3.py - this is the python file that contains the coded algorithms asked of us in task3.
+- task3_tests.py - this file contains the tests that we are asked to run for task 3.
 
   
 
