@@ -37,7 +37,7 @@ Finally, it contains a Figures folder, which contains the images in our report.
   - task3_pairs_figure_1.png - a histogram of lengths of edges in Eavg and Emax for trajectories (010-20081016113953, 010-20080923124453)
   - task3_pairs_figure_2.png - a histogram of lengths of edges in Eavg and Emax for trajectories (115-20080520225850, 115-20080615225707)
 
-To reproduce our results, run task1_viz.py, then task2.py, then task3.py
+To reproduce our results, run task1_viz.py, task1_tests.py, then task2_tests.py, then task3_tests.py
 
  ## External Dependencies
 
