@@ -5,7 +5,7 @@ experiments for task 2
 import task2
 import time
 
-filename = 'geolife-cars-ten-percent.csv'
+filename = 'geolife-cars.csv'
 trajectories = ['128-20080503104400', '010-20081016113953', '115-20080520225850', '115-20080615225707']
 
 def main(T):

@@ -3,7 +3,7 @@ from typing import List, Tuple
 import csv
 from matplotlib import pyplot as plt
 
-filename = 'geolife-cars-ten-percent.csv'
+filename = 'geolife-cars.csv'
 data = []
 
 def import_data(fname):
@@ -37,12 +37,11 @@ def dist_point_segment(q: Tuple[float, float], e): #d in the case study doc
     if l2 == 0:
         return min(dist(q, a), dist(q,b))
 
-
     AB = [e[1][0]-e[0][0],e[1][1]-e[0][1]]
     AQ = [q[0]-e[0][0],q[1]-e[0][1]]
     BQ = [q[0]-e[1][0],q[1]-e[1][1]]
     if dotProduct(AB,AQ)==0 or dotProduct(AB,BQ)==0:
-        return ((((b[0] - a[0])* (a[1]-q[1])) - ((a[0] - q[0]) * (b[1]-a[1])))/ math.sqrt(l2))
+        return (abs(((b[0] - a[0])* (a[1]-q[1])) - ((a[0] - q[0]) * (b[1]-a[1])))/ math.sqrt(l2))
     else:
         return min(dist((e[0][0],e[0][1]),q),dist((e[1][0],e[1][1]),q))
 
@@ -98,12 +97,15 @@ def visualize(t, ts1, ts2, ts3):
     ax1.set_title('eps = 0.03')
     ax1.plot(T_x, T_y, color = 'blue', label = 't')
     ax1.plot(T_star_1_x, T_star_1_y, color = 'red', linewidth = 0.7, marker = '.', markersize=5, label = 't*')
+    ax1.legend()
     ax2.set_title('eps = 0.1')
     ax2.plot(T_x, T_y, color = 'blue', label = 't')
     ax2.plot(T_star_2_x, T_star_2_y, color = 'red', linewidth = 0.7, marker = '.',  markersize=5, label = 't*')
+    ax2.legend()
     ax3.set_title('eps = 0.3')
     ax3.plot(T_x, T_y, color = 'blue', label = 't')
     ax3.plot(T_star_3_x, T_star_3_y, color = 'red', linewidth = 0.7, marker = '.',  markersize=5, label = 't*')
+    ax3.legend()
     plt.show()
 
     plt.legend()
