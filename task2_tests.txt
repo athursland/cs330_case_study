@@ -1,0 +1,4 @@
+Compression ratio for id = 128-20080503104400 : 1.44 
+Compression ratio for id = 010-20081016113953 : 1.3870967741935485 
+Compression ratio for id = 115-20080520225850 : 1.1984126984126984 
+Compression ratio for id = 115-20080615225707 : 1.191304347826087 
