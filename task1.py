@@ -9,7 +9,6 @@ import random
 import heapq
 import time
 from matplotlib import pyplot as plt
-import seaborn
 
 ### define global variables
 ten_percent = 'geolife-cars-ten-percent.csv'
@@ -17,7 +16,6 @@ thirty_percent = 'geolife-cars-thirty-percent.csv'
 sixty_percent = 'geolife-cars-sixty-percent.csv'
 full_dataset = 'geolife-cars.csv'
 data = []
-r = 5
 grid = None
 
 def import_data(fname):
@@ -85,12 +83,11 @@ def density(p):
 
     return count
 
-def hubs(k):
+def hubs(k, r):
     global all_hubs
     all_hubs = []
-    start = time.time()
     ret = [(0, (0,0))] * k # initialize list of 0s of length k
-    heapq.heapify(ret) # make it a heap 
+    heapq.heapify(ret) # make it a heap
 
     upper_bound = maxy
     for row in range(num_rows):
@@ -102,7 +99,6 @@ def hubs(k):
             all_hubs.append(density(cell_center))
             left_bound += r # increment left bound by r
         upper_bound -= r # decrement upper bound by r
-
     return ret
 
 def visualize(hubs, data):
@@ -120,8 +116,8 @@ def visualize(hubs, data):
 if __name__ == "__main__":
     ### make scatterplot 
     r = 2
-    import_data(full_dataset) # step 1
-    preprocess(data) # step 2
-    hubs = hubs(10)
+    import_data(full_dataset)
+    preprocess(data)
+    hubs = hubs(10, r)
     print(hubs)
     visualize(hubs, data)

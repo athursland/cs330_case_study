@@ -3,6 +3,7 @@ import heapq
 from typing import List, Tuple
 import csv
 from matplotlib import pyplot as plt
+from datetime import datetime
 
 filename = 'geolife-cars-ten-percent.csv'
 data = []
@@ -17,10 +18,11 @@ def import_data(fname):
      reader = csv.reader(f)
      next(reader, None) # skip the headers
      for row in reader:
-         id = row[1]
-         x = float(row[2])
-         y = float(row[3])
-         data.append((id, x, y))
+        date_time = datetime.strptime(row[0], '%y/%m/%d %H:%M:%S')
+        id = row[1]
+        x = float(row[2])
+        y = float(row[3])
+        data.append((id, x, y, date_time))
 
 def dist(p1: Tuple[float, float], p2: Tuple[float, float]) -> float:
   x1, y1 = p1
