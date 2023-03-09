@@ -4,6 +4,7 @@ ali mike dylan and noa
 """
 
 import csv
+import math
 import random
 import heapq
 import time
@@ -22,9 +23,6 @@ grid = None
 interval = 0
 
 def import_data(fname):
-    """
-    import data from csv
-    """
     global data
 
     with open(fname, newline='', encoding='utf-8') as f:
@@ -36,10 +34,6 @@ def import_data(fname):
             data.append((x, y))
 
 def get_cell_indices(point):
-    """
-    helper function for preprocess - 
-    given a point p, decide which cell it belongs in
-    """
     col = int(((point[0]-minx)) / (r/2))
     row = int(((point[1]-miny)) / (r/2))
     print("col", col)
@@ -48,11 +42,6 @@ def get_cell_indices(point):
     return col, row
 
 def preprocess(data):
-    """
-    using the input data, find the optimal value of r
-    to be used for pre-processing (creating the grid)
-    O (n log n) time for sorting
-    """
     global minx, maxx, miny, maxy
     global num_cols
     global num_rows
@@ -67,8 +56,8 @@ def preprocess(data):
     height = abs(maxy - miny)
     
     # define number of columns and rows for our grid 
-    num_cols = int(width / (r/2)) + 1
-    num_rows = int(height / (r/2)) + 1
+    num_cols = int(width / math.sqrt(r)) + 1
+    num_rows = int(height / math.sqrt(r)) + 1
     print("num_rows", num_rows)
     print("num_cols", num_cols)
 
@@ -85,12 +74,6 @@ def preprocess(data):
             cell.sort()
 
 def density(p):
-    """
-    find the density for a given point
-    input: p, a point that may or may not be in P
-    output: the # of points within r*r square of p
-    ~O(1) time
-    """
     col, row = get_cell_indices(p)
 
     # add everything in the given cell to ret
@@ -109,11 +92,6 @@ def density(p):
     return count
 
 def hubs(k):
-    """
-    identify k > - hubs of high density s.t. 
-    any two hubs re separated by at least distance r
-    O(n) runtime complexity 
-    """
     global all_hubs
     all_hubs = []
     start = time.time()
@@ -128,8 +106,8 @@ def hubs(k):
             if density(cell_center) > min(ret, key = lambda x: x[0])[0]:
                 heapq.heapreplace(ret, (density(cell_center), cell_center))
             all_hubs.append(density(cell_center))
-            left_bound += (r/2) # increment left bound by r
-        upper_bound -= (r/2) # decrement upper bound by r
+            left_bound += math.sqrt(r) # increment left bound by r
+        upper_bound -= math.sqrt(r) # decrement upper bound by r
 
     end = time.time()
     global interval 
@@ -153,8 +131,6 @@ def visualize(hubs, data):
     return
     
 if __name__ == "__main__":
-    
-    
     ### make scatterplot 
     r = 8
     import_data(full_dataset) # step 1

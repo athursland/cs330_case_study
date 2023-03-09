@@ -2,6 +2,7 @@ import math
 import heapq
 from typing import List, Tuple
 import csv
+from matplotlib import pyplot as plt
 
 filename = 'geolife-cars-ten-percent.csv'
 data = []
@@ -103,6 +104,15 @@ if __name__ == '__main__':
 
    import_data(filename)
    T = [x[1:]  for x in data if x[0] == "128-20080503104400"]
+   fig1_x = [point[0] for point in T]
+   fig1_y = [point[1] for point in T]
+   fig1_points = simplify_trajectory(T, 0.03)
+   fig1_simple_x = [point[0] for point in fig1_points]
+   fig1_simple_y = [point[1] for point in fig1_points]
+   plt.scatter(fig1_simple_x, fig1_simple_y, color = 'red')
+   plt.scatter(fig1_x, fig1_y, color = "blue")
+   plt.show()
+
    print(len(T))
    print(simplify_trajectory(T, 0.03))
 
