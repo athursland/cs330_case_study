@@ -1,10 +1,10 @@
 # CompSci 330 Case Study README
 
 ## Authors
- - Ali Thursland
- - Mike Kim
- - Noa Nir
- - Dylan Schneiderman  
+ - Ali Thursland - akt21
+ - Mike Kim - bk146
+ - Noa Nir - 
+ - Dylan Schneiderman - mds98
 
 ## Zip Contents
 Our zip file contains 4 csv files that were provided to us as part of the case study. 
