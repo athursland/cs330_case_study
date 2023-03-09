@@ -1,5 +1,5 @@
 """
-tests for task1
+Runtime tests for our team's implementation of the algorithms described in task1
 """
 
 import task1
@@ -13,6 +13,9 @@ global interval
 datasets = ['geolife-cars-ten-percent.csv', 'geolife-cars-thirty-percent.csv', 'geolife-cars-sixty-percent.csv', 'geolife-cars.csv']
 
 def task1_test(k, r, fname):
+    """
+    input: integer k 
+    """
     task1.data = []
     start = time.time()
     task1.main(k, r, fname)

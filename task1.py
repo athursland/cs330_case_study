@@ -104,13 +104,16 @@ def hubs(k, r):
 def visualize(hubs, data):
     x = [point[0] for point in data]
     y = [point[1] for point in data]
-    plt.scatter(x, y, s = 5, alpha = 0.05, label = "Points of P")
+    plt.scatter(x, y, s = 5, alpha = 0.1, label = "Points of P")
 
     x_hubs = [center[1][0] for center in hubs]
     y_hubs = [center[1][1] for center in hubs]
     plt.scatter(x_hubs, y_hubs, s = 10, color = 'r', label = "Hubs identified (H)")
 
     plt.legend()
+    plt.xlabel('X-coordinates')
+    plt.ylabel('Y-coordinates')
+    plt.title('Points of P and hubs identified using k = 10, r = 8km')
 
     plt.show()
     return
