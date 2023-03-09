@@ -15,6 +15,7 @@ def test_ten():
     task1.import_data('geolife-cars-ten-percent.csv')
     task1.preprocess(task1.data)
     end = time.time()
+    return (end-start)
     print("points in dataset: ", len(task1.data))
     print("10% time: ", (end-start))
 
@@ -24,8 +25,7 @@ def test_thirty():
     task1.import_data('geolife-cars-thirty-percent.csv')
     task1.preprocess(task1.data)
     end = time.time()
-    print("points in dataset: ", len(task1.data))
-    print("30% time: ", (end-start))
+    return (end-start)
 
 def test_sixty():
     task1.data = []
@@ -33,8 +33,7 @@ def test_sixty():
     task1.import_data('geolife-cars-sixty-percent.csv')
     task1.preprocess(task1.data)
     end = time.time()
-    print("points in dataset: ", len(task1.data))
-    print("60% time: ", (end-start))
+    return (end-start)
 
 def test_full():
     task1.data = []
@@ -42,11 +41,14 @@ def test_full():
     task1.import_data('geolife-cars.csv')
     task1.preprocess(task1.data)
     end = time.time()
-    print("points in dataset: ", len(task1.data))
-    print("100% time: ", (end-start))
+    return (end-start)
 
 if __name__=="__main__":
-    test_ten()
-    test_thirty()
-    test_sixty()
-    test_full()
+    file1 = open('task1_tests.txt', 'w')
+    results = []
+    results.append("10%: " + str(test_ten()) + " \n")
+    results.append("30%: " + str(test_thirty()) + " \n")
+    results.append("60% " + str(test_sixty()) + " \n")
+    results.append("100%: " + str(test_full()) + " \n")
+    file1.writelines(results)
+    file1.close()
