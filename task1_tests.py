@@ -9,65 +9,31 @@ import time
 global data
 global interval
 
-def test_ten():
+### datasets
+datasets = ['geolife-cars-ten-percent.csv', 'geolife-cars-thirty-percent.csv', 'geolife-cars-sixty-percent.csv', 'geolife-cars.csv']
+
+def task1_test(k, r, fname):
     task1.data = []
     start = time.time()
-    task1.import_data('geolife-cars-ten-percent.csv')
-    task1.preprocess(task1.data)
-    task1.hubs(10, 8)
-    end = time.time()
-    return (end-start)
-
-def test_thirty():
-    task1.data = []
-    start = time.time()
-    task1.import_data('geolife-cars-thirty-percent.csv')
-    task1.preprocess(task1.data)
-    task1.hubs(10, 8)
-    end = time.time()
-    return (end-start)
-
-def test_sixty():
-    task1.data = []
-    start = time.time()
-    task1.import_data('geolife-cars-sixty-percent.csv')
-    task1.preprocess(task1.data)
-    task1.hubs(10, 8)
-    end = time.time()
-    return (end-start)
-
-def test_full():
-    task1.data = []
-    start = time.time()
-    task1.import_data('geolife-cars.csv')
-    task1.preprocess(task1.data)
-    task1.hubs(10, 8)
-    end = time.time()
-    return (end-start)
-
-def hubs_test(k, r):
-    times = []
-    start = time.time()
-    task1.import_data('geolife-cars-ten-percent.csv')
-    task1.preprocess(task1.data)
-    task1.hubs(k, r)
+    task1.main(k, r, fname)
     end = time.time()
     return (end-start)
 
 if __name__=="__main__":
-    file1 = open('task1_tests.txt', 'w')
     results = []
-    results.append("10%: " + str(test_ten()) + " \n")
-    results.append("30%: " + str(test_thirty()) + " \n")
-    results.append("60% " + str(test_sixty()) + " \n")
-    results.append("100%: " + str(test_full()) + " \n")
-    for i in range(3):
-        results.append("trial " + str(i) + " k = 5, r = 2km: " + str(hubs_test(5, 2)) + " \n")
-    for i in range(3):
-        results.append("trial " + str(i) + " k = 10, r = 2km: " + str(hubs_test(10, 2)) + " \n")
-    for i in range(3): 
-        results.append("trial " + str(i) + " k = 20, r = 2km: " + str(hubs_test(20, 2)) + " \n")
-    for i in range(3):
-        results.append("trial " + str(i) + " k = 40, r = 2km: " + str(hubs_test(40, 2)) + " \n")
+    name = ['10%', '30%', '60%', '100%']
+    k_values = [5, 10, 20, 40]
+    
+    file1 = open('task1_tests.txt', 'w')
+    
+    for i in range(4):
+        results.append("Trial 1,  k = {}, r = 2km: {} \n".format(k_values[i], task1_test(k_values[i], 2, datasets[0])))
+        results.append("Trial 2,  k = {}, r = 2km: {} \n".format(k_values[i], task1_test(k_values[i], 2, datasets[0])))
+        results.append("Trial 3,  k = {}, r = 2km: {} \n\n".format(k_values[i], task1_test(k_values[i], 2, datasets[0])))
+
+    for i in range(4):
+        results.append("{} results: {} \n".format(name[i], task1_test(10, 8, datasets[i])))
+    
     file1.writelines(results)
     file1.close()
+    print(results)

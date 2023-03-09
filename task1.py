@@ -112,12 +112,22 @@ def visualize(hubs, data):
 
     plt.show()
     return
+
+def main(k, radius, fname):
+    global r
+    r = radius
+    import_data(fname)
+    preprocess(data)
+    return hubs(k, r)
     
 if __name__ == "__main__":
-    ### make scatterplot 
+    ### make scatterplot
+    #print(main())
+    """
     r = 2
     import_data(full_dataset)
     preprocess(data)
     hubs = hubs(10, r)
     print(hubs)
     visualize(hubs, data)
+    """
