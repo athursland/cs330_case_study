@@ -17,7 +17,7 @@ def task1_test(k, r, fname):
     start = time.time()
     task1.main(k, r, fname)
     end = time.time()
-    return (end-start)
+    return (end-start)*1000 # milliseconds
 
 if __name__=="__main__":
     results = []

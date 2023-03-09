@@ -104,11 +104,13 @@ def hubs(k, r):
 def visualize(hubs, data):
     x = [point[0] for point in data]
     y = [point[1] for point in data]
-    plt.scatter(x, y, s = 5, alpha = 0.05)
+    plt.scatter(x, y, s = 5, alpha = 0.05, label = "Points of P")
 
     x_hubs = [center[1][0] for center in hubs]
     y_hubs = [center[1][1] for center in hubs]
-    plt.scatter(x_hubs, y_hubs, color = 'r')
+    plt.scatter(x_hubs, y_hubs, s = 10, color = 'r', label = "Hubs identified (H)")
+
+    plt.legend()
 
     plt.show()
     return
@@ -121,8 +123,8 @@ def main(k, radius, fname):
     return hubs(k, r)
     
 if __name__ == "__main__":
-    ### make scatterplot
-    #print(main())
+    results = main(10, 8, full_dataset)
+    visualize(results, data)
     """
     r = 2
     import_data(full_dataset)
