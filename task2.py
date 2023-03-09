@@ -79,25 +79,43 @@ def simplify_trajectory(T: List[Tuple[float, float]], eps: float) -> List[Tuple[
        return [T[0], T[-1]]
 
 
-def visualize(t_star, t):
+def visualize(t, ts1, ts2, ts3):
     """
     create line plot for visualizing output
     """
-    T_star_x = [point[0] for point in t_star]
-    T_star_y = [point[1] for point in t_star]
+    T_star_1_x = [point[0] for point in ts1]
+    T_star_1_y = [point[1] for point in ts1]
+    T_star_2_x = [point[0] for point in ts2]
+    T_star_2_y = [point[1] for point in ts2]
+    T_star_3_x = [point[0] for point in ts3]
+    T_star_3_y = [point[1] for point in ts3]
+
     T_x = [point[0] for point in t]
     T_y = [point[1] for point in t]
-    plt.plot(T_star_x, T_star_y, marker = 'o', color = 'red', label = 't*')
-    plt.plot(T_x, T_y, marker = 'o', color = 'blue', label = 't')
-    plt.legend()
+
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3)
+    fig.suptitle('Trajectory simplifications on id = 128-20080503104400 for eps = 0.03, 0.1, 0.3')
+    ax1.set_title('eps = 0.03')
+    ax1.plot(T_x, T_y, color = 'blue', label = 't')
+    ax1.plot(T_star_1_x, T_star_1_y, color = 'red', linewidth = 0.7, marker = '.', markersize=5, label = 't*')
+    ax2.set_title('eps = 0.1')
+    ax2.plot(T_x, T_y, color = 'blue', label = 't')
+    ax2.plot(T_star_2_x, T_star_2_y, color = 'red', linewidth = 0.7, marker = '.',  markersize=5, label = 't*')
+    ax3.set_title('eps = 0.3')
+    ax3.plot(T_x, T_y, color = 'blue', label = 't')
+    ax3.plot(T_star_3_x, T_star_3_y, color = 'red', linewidth = 0.7, marker = '.',  markersize=5, label = 't*')
     plt.show()
+
+    plt.legend()
+    plt.xlabel('x-coordinates')
+    plt.ylabel('y-coordinates')
     return
 
 if __name__ == '__main__':
+    ### visualize for eps = 0.03 
     import_data(filename)
     T = [x[1:]  for x in data if x[0] == "128-20080503104400"]
-    T_star = simplify_trajectory(T, 0.03)
-    #visualize(T_star, T)
-    print(len(T))
-    print(len(T_star))
-    print(len(T)/len(T_star))
+    T_star_1 = simplify_trajectory(T, 0.03)
+    T_star_2 = simplify_trajectory(T, 0.1)
+    T_star_3 = simplify_trajectory(T, 0.3)
+    visualize(T, T_star_1, T_star_2, T_star_3)
