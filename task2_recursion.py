@@ -3,10 +3,8 @@ from typing import List, Tuple
 import csv
 from matplotlib import pyplot as plt
 
-
 filename = 'geolife-cars-ten-percent.csv'
 data = []
-
 
 def import_data(fname):
     """
@@ -22,16 +20,13 @@ def import_data(fname):
             y = float(row[3])
             data.append((id, x, y))
 
-
 def dist(p1: Tuple[float, float], p2: Tuple[float, float]) -> float:
     x1, y1 = p1
     x2, y2 = p2
     return ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
 
-
 def dotProduct(A,B):
     return A[0]*B[0]+A[1]*B[1]
-
 
 def dist_point_segment(q: Tuple[float, float], e): #d in the case study doc
     # Compute the squared length of the segment e
@@ -84,15 +79,25 @@ def simplify_trajectory(T: List[Tuple[float, float]], eps: float) -> List[Tuple[
        return [T[0], T[-1]]
 
 
-def visualize():
+def visualize(t_star, t):
     """
-    create histogram for visualizing output
+    create line plot for visualizing output
     """
+    T_star_x = [point[0] for point in t_star]
+    T_star_y = [point[1] for point in t_star]
+    T_x = [point[0] for point in t]
+    T_y = [point[1] for point in t]
+    plt.plot(T_star_x, T_star_y, marker = 'o', color = 'red', label = 't*')
+    plt.plot(T_x, T_y, marker = 'o', color = 'blue', label = 't')
+    plt.legend()
+    plt.show()
     return
 
 if __name__ == '__main__':
-
     import_data(filename)
     T = [x[1:]  for x in data if x[0] == "128-20080503104400"]
+    T_star = simplify_trajectory(T, 0.03)
+    #visualize(T_star, T)
     print(len(T))
-    print(simplify_trajectory(T, 0.03))
+    print(len(T_star))
+    print(len(T)/len(T_star))
