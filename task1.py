@@ -20,8 +20,6 @@ data = []
 r = 5
 grid = None
 
-interval = 0
-
 def import_data(fname):
     global data
 
@@ -34,10 +32,8 @@ def import_data(fname):
             data.append((x, y))
 
 def get_cell_indices(point):
-    col = int(((point[0]-minx)) / (r/2))
-    row = int(((point[1]-miny)) / (r/2))
-    print("col", col)
-    print("row", row)
+    col = int((point[0]-minx) / r)
+    row = int((point[1]-miny) / r)
 
     return col, row
 
@@ -56,10 +52,8 @@ def preprocess(data):
     height = abs(maxy - miny)
     
     # define number of columns and rows for our grid 
-    num_cols = int(width / math.sqrt(r)) + 1
-    num_rows = int(height / math.sqrt(r)) + 1
-    print("num_rows", num_rows)
-    print("num_cols", num_cols)
+    num_cols = int(width / r) + 1
+    num_rows = int(height / r) + 1
 
     # initialize an empty grid with the appropriate number of cells
     global grid
@@ -106,12 +100,8 @@ def hubs(k):
             if density(cell_center) > min(ret, key = lambda x: x[0])[0]:
                 heapq.heapreplace(ret, (density(cell_center), cell_center))
             all_hubs.append(density(cell_center))
-            left_bound += math.sqrt(r) # increment left bound by r
-        upper_bound -= math.sqrt(r) # decrement upper bound by r
-
-    end = time.time()
-    global interval 
-    interval = end - start
+            left_bound += r # increment left bound by r
+        upper_bound -= r # decrement upper bound by r
 
     return ret
 
@@ -124,65 +114,14 @@ def visualize(hubs, data):
     y_hubs = [center[1][1] for center in hubs]
     plt.scatter(x_hubs, y_hubs, color = 'r')
 
-    fig = plt.figure()
-    ax1 = fig.add_subplot(111)
-    ax1.plot(x_hubs, y_hubs, 'ks', markerfacecolor='none', ms=15, markeredgecolor='black')
     plt.show()
     return
     
 if __name__ == "__main__":
     ### make scatterplot 
-    r = 8
+    r = 2
     import_data(full_dataset) # step 1
     preprocess(data) # step 2
     hubs = hubs(10)
     print(hubs)
     visualize(hubs, data)
-    """
-
-    ### testing hubs
-    global all_hubs
-    r = 3
-    data = [((random.uniform(-10, 10)), random.uniform(-10, 10)) for _ in range(100)]
-    data += [((random.uniform(-5, 5)), random.uniform(-5, 5)) for _ in range(1000)]
-    preprocess(data)
-    hubs = hubs(4)
-    print(hubs)
-    visualize(hubs, data)
-
-    """
-    """
-    ### 10%
-    data = [] 
-    import_data(ten_percent) # step 1
-    preprocess(data) # step 2
-    print(hubs(10))
-    print("points in dataset: ", len(data))
-    print("10% time: ", interval)
-    ### 30% 
-    data = []
-    import_data(thirty_percent) # step 1
-    preprocess(data) # step 2
-    p = random.choice(data)
-    print(hubs(2))
-    print("points in dataset: ", len(data))
-    print("30% time: ", interval)
-
-    ### 60%
-    data = []
-    import_data(sixty_percent) # step 1
-    preprocess(data) # step 2
-    p = random.choice(data)
-    print(hubs(2))
-    print("points in dataset: ", len(data))
-    print("60% time: ", interval)
-
-    ### full dataset
-    data = []
-    import_data(full_dataset) # step 1
-    preprocess(data) # step 2
-    p = random.choice(data)
-    print(hubs(2))
-    print("points in dataset: ", len(data))
-    print("100% time: ", interval)
-    """
