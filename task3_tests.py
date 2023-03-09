@@ -53,24 +53,6 @@ def simplified_eavg():
     plt.legend()
     plt.savefig('task3_eavg_figure')
 
-    """
-    fig, (ax1, ax2, ax3) = plt.subplots(1, 3)
-    ax1.hist(plots[0])
-    ax1.set_title('Epsilon = {}'.format[eps[0]])
-    ax1.set_xlabel('Edge length')
-    ax1.set_ylabel('Counts')
-    ax2.hist(plots[1])
-    ax2.set_title('Epsilon = {}'.format[eps[1]])
-    ax2.set_xlabel('Edge length')
-    ax2.set_ylabel('Counts')
-    ax3.hist(plots[2])
-    ax3.set_title('Epsilon = {}'.format[eps[2]])
-    ax3.set_xlabel('Edge length')
-    ax3.set_ylabel('Counts')
-    plt.show()
-    return 
-    """
-
 if __name__ == "__main__":
     task3.import_data(filename)
     histogram_pairs()
