@@ -1,5 +1,4 @@
 import math
-import heapq
 from typing import List, Tuple
 import csv
 from matplotlib import pyplot as plt
@@ -67,38 +66,31 @@ def closest_points(p, points):
             second_closest = point
             sec_min_dist = dist(p, point)
 
-
     return closest, second_closest
 
-
 def simplify_trajectory(T: List[Tuple[float, float]], eps: float) -> List[Tuple[float, float]]:
-    simplified = [T[0],T[-1]]
-    maxD = 0
-    maxDpoint = None
-    #pq = []
-    for i in range(1,len(T)-1):
-        two_closest = closest_points(T[i], simplified)
-        d = dist_point_segment(T[i], (two_closest[0], two_closest[1]))
-        #print(simplified)
-        if maxD>d:
-            maxD = d
-            maxDpoint = T[i]
-    T.remove(maxDpoint)
-    simplified.append(maxDpoint)
+   if len(T) < 3:
+       # Base case: return the input trajectory if it has 2 or fewer points
+       return T
 
-    if maxD<eps:
-        return simplified
-    else:
-        simplify_trajectory(T[0:maxDpoint],eps)
-        simplify_trajectory(T[maxDpoint:],eps)
+   max_dist, max_idx = max((dist_point_segment(T[i], (T[0], T[-1])), i) for i in range(1, len(T) - 1))
+
+   if max_dist>=eps:
+       simplified_left= simplify_trajectory(T[:max_idx+1],eps)
+       simplified_right= simplify_trajectory(T[max_idx:],eps)
+       return simplified_left[:-1] + simplified_right
+       #simplify_trajectory(T[maxDpoint:],eps)
+   else:
+       return [T[0], T[-1]]
 
 
-
-
-
+def visualize():
+    """
+    create histogram for visualizing output
+    """
+    return
 
 if __name__ == '__main__':
-
 
     import_data(filename)
     T = [x[1:]  for x in data if x[0] == "128-20080503104400"]
