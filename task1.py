@@ -40,8 +40,10 @@ def get_cell_indices(point):
     helper function for preprocess - 
     given a point p, decide which cell it belongs in
     """
-    col = int((point[0]-minx) / r)
-    row = int((point[1]-miny) / r)
+    col = int(((point[0]-minx)) / (r/2))
+    row = int(((point[1]-miny)) / (r/2))
+    print("col", col)
+    print("row", row)
 
     return col, row
 
@@ -65,11 +67,13 @@ def preprocess(data):
     height = abs(maxy - miny)
     
     # define number of columns and rows for our grid 
-    num_cols = int(width / r) + 1
-    num_rows = int(height / r) + 1
+    num_cols = int(width / (r/2)) + 1
+    num_rows = int(height / (r/2)) + 1
+    print("num_rows", num_rows)
+    print("num_cols", num_cols)
 
     # initialize an empty grid with the appropriate number of cells
-    global grid 
+    global grid
     grid = [[[] for _ in range(num_cols)] for _ in range(num_rows)]
 
     for point in data: 
@@ -124,8 +128,8 @@ def hubs(k):
             if density(cell_center) > min(ret, key = lambda x: x[0])[0]:
                 heapq.heapreplace(ret, (density(cell_center), cell_center))
             all_hubs.append(density(cell_center))
-            left_bound += r # increment left bound by r
-        upper_bound -= r # decrement upper bound by r
+            left_bound += (r/2) # increment left bound by r
+        upper_bound -= (r/2) # decrement upper bound by r
 
     end = time.time()
     global interval 
@@ -140,7 +144,11 @@ def visualize(hubs, data):
 
     x_hubs = [center[1][0] for center in hubs]
     y_hubs = [center[1][1] for center in hubs]
-    plt.scatter(x_hubs, y_hubs, s = color = 'r')
+    plt.scatter(x_hubs, y_hubs, color = 'r')
+
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    ax1.plot(x_hubs, y_hubs, 'ks', markerfacecolor='none', ms=15, markeredgecolor='black')
     plt.show()
     return
     
