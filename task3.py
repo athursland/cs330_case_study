@@ -106,13 +106,9 @@ def fd(seriesA, seriesB):
 
    return T[n-1][m-1]
 
-
-
 #Distance Formula
 def dist(a, b):
   return math.dist([a[0], a[1]], [b[0], b[1]])
-
-
 
 #Creates Frequency Dictionary for Histogram
 def count_elements(seq):
@@ -128,8 +124,8 @@ def plot_histogram(dict):
    for key in dict:
        ind.append(key)
        freq.append(dict.get(key))
-  # plt.bar(ind, freq)
-   #plt.show()
+    #plt.bar(ind, freq)
+    #plt.show()
 
 def main():
    A = [(0, 0), (1,1), (2,2)]
