@@ -2,11 +2,27 @@
 task3 
 noa mike ali dylan
 """
-
 import math
+import csv
 
+data = []
+
+def import_data(fname):
+    """
+    import data from csv
+    """
+    global data
+    with open(fname, newline='', encoding='utf-8') as f:
+        reader = csv.reader(f)
+        next(reader, None) # skip the headers
+        for row in reader:
+            id = row[1]
+            x = float(row[2])
+            y = float(row[3])
+            data.append((id, x, y))
+
+# dynamic time warping, Eavg 
 def dtw(seriesA, seriesB):
-  
    A = seriesA
    B = seriesB
    n = len(seriesA)
@@ -41,9 +57,10 @@ def dtw(seriesA, seriesB):
        pair = find_min(n, k)
        distances.append(dist(A[pair[0]], B[pair[1]]))
 
-   return DP[n - 1][m - 1]
+   #return DP[n - 1][m - 1]
+   return distances
 
-#Frechet Distance Function
+#Frechet Distance Function, Emax
 def fd(seriesA, seriesB):
    A = seriesA
    B = seriesB
@@ -72,26 +89,23 @@ def fd(seriesA, seriesB):
            if DP[i][m] < DP[min[0]][min[1]]:
                min = (i, m)
        return min
-
+   
    distances = []
 
    for k in range(0,m):
        pair = find_min(n,k)
        distances.append(dist(A[pair[0]],B[pair[1]]))
-
-   print(distances)
-
-   return DP[n-1][m-1]
+   #return DP[n-1][m-1]
+   return distances
 
 #Distance Formula
 def dist(a, b):
   return math.dist([a[0], a[1]], [b[0], b[1]])
 
-def main():
-   A = [(0, 0), (1,1), (2,2)]
-   B = [(0, 1), (2,1)]
-   print(dtw(A, B))
-   print(fd(A, B))
+def main(P, Q):
+   return (dtw(P, Q), fd(P, Q))
 
 if __name__ == '__main__':
-   main()
+    A = [(0, 0), (1,1), (2,2)]
+    B = [(0, 1), (2,1)]
+    print(main(A, B))
