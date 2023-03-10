@@ -17,7 +17,7 @@ Our ZIP file contains our source code in and a PDF of our powerpoint presentatio
 - task3.py - contains our implementation of the monotone assignments described in Task 3.
 - task3_tests.py - contains the code needed to produce the histograms necessary for interpreting the performance of our Task 3 algorithms.
 
-NOTE: We did not include the 'geolife-cars.csv' family of datasets in our ZIP file. These must be in the same directory path as the source code files for the data to import correctly. Please take note this when attempting to reproduce our results.
+NOTE: We did not include the 'geolife-cars.csv' family of datasets in our ZIP file. These must be in the same directory path as the source code files for the data to import correctly. Please take note of this when attempting to reproduce our results.
 
 The ZIP file also contains the following .txt files:
 - task1_tests.txt - This text file contains the non-figure results of our case study. First, it contains our algorithm's runtime in ms for k=5,10,20,40 and r =2km. Then, under that, this file has our algorithm's runtime using k=10, r=8km, on the full dataset, and the 10%, 30%, and 60% subsets.
