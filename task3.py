@@ -54,7 +54,6 @@ def dtw(seriesA, seriesB):
         pair = find_min(n, k)
         distances.append(dist(A[pair[0]], B[pair[1]]))
 
-    #return DP[n - 1][m - 1]
     return distances
 
     #Frechet Distance Function, Emax
@@ -94,8 +93,7 @@ def fd(seriesA, seriesB):
     for k in range(0,m):
         pair = find_min(n,k)
         distances.append(dist(A[pair[0]],B[pair[1]]))
-    #print(DP[n-1][m-1])
-    #return DP[n-1][m-1]
+    
     return distances
 
 #Distance Formula

@@ -128,11 +128,10 @@ def main(k, radius, fname):
 if __name__ == "__main__":
     results = main(10, 8, full_dataset)
     visualize(results, data)
-    """
-    r = 2
+
+    global r 
+    r = 5
+    p = (5, 8)
     import_data(full_dataset)
     preprocess(data)
-    hubs = hubs(10, r)
-    print(hubs)
-    visualize(hubs, data)
-    """
+    print(density(p))
