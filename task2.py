@@ -63,19 +63,31 @@ def closest_points(p, points):
     return closest, second_closest
 
 def simplify_trajectory(T: List[Tuple[float, float]], eps: float) -> List[Tuple[float, float]]:
-   if len(T) < 3:
+    if len(T) < 3:
        # Base case: return the input trajectory if it has 2 or fewer points
-       return T
+       return []
 
-   max_dist, max_idx = max((dist_point_segment(T[i], (T[0], T[-1])), i) for i in range(1, len(T) - 1))
+    T_start=T[0]
+    T_end=T[-1]
 
-   if max_dist>eps:
+    max_dist, max_idx = max((dist_point_segment(T[i], (T_start, T_end)), i) for i in range(1, len(T) - 1))
+    
+    if max_dist>eps:
        simplified_left= simplify_trajectory(T[:max_idx+1],eps)
        simplified_right= simplify_trajectory(T[max_idx:],eps)
        return simplified_left[:-1] + simplified_right
        #simplify_trajectory(T[maxDpoint:],eps)
-   else:
-       return [T[0], T[-1]]
+    else:
+       return [T[0],T[-1]]
+    '''
+    if max_dist<=eps:
+        return [T[0],T[-1]]
+    else:
+        simplified_left= simplify_trajectory(T[:max_idx+1],eps)
+        simplified_right= simplify_trajectory(T[max_idx:],eps)
+        return simplified_left[:-1] + simplified_right
+    '''
+
 
 
 def visualize(t, ts1, ts2, ts3):
