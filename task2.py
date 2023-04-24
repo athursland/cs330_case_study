@@ -62,15 +62,38 @@ def closest_points(p, points):
 
     return closest, second_closest
 
+def distance(p1, p2, p0):
+    x21 = p2[0] - p1[0]
+    y21 = p2[1] - p1[1]
+    x01 = p0[0] - p1[0]
+    y01 = p0[1] - p1[1]
+    perp = ((x21 * y01) - (x01 * y21)) / (
+        math.sqrt(x21 ** 2 + y21 ** 2))
+
+    if (x01 ** 2 + y01 ** 2 - perp ** 2) > (x21 ** 2 + y21 ** 2):
+        return math.sqrt((p2[0] - p0[0]) ** 2 + (p2[1] - p0[1]) ** 2)
+    if ((x21 * x01) + (y21 * y01)) < 0:
+        return math.sqrt(x01 ** 2 + y01 ** 2)
+
+    return perp
+
 def simplify_trajectory(T: List[Tuple[float, float]], eps: float) -> List[Tuple[float, float]]:
+    
     if len(T) < 3:
        # Base case: return the input trajectory if it has 2 or fewer points
-       return []
+       return [T[0],T[-1]]
 
     T_start=T[0]
     T_end=T[-1]
+    max_idx=0
+    max_dist = 0
 
-    max_dist, max_idx = max((dist_point_segment(T[i], (T_start, T_end)), i) for i in range(1, len(T) - 1))
+    #max_dist, max_idx = max((dist_point_segment(T[i], (T_start, T_end)), i) for i in range(1, len(T) - 1))
+    #max_dist, max_idx = max((distance(T_start, T_end, T[i])), i) for i in range(1, len(T) - 1)
+    for i, point in enumerate(T):
+        if abs(distance(T_start, T_end, point)) > max_dist:
+            max_dist = abs(distance(T_start, T_end, point))
+            max_idx = i
     
     if max_dist>eps:
        simplified_left= simplify_trajectory(T[:max_idx+1],eps)
